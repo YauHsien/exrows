@@ -40,6 +40,14 @@ To query results from all nodes with some service,
 |  {:error, reasons :: [term]}
 ```
 
+## Usage
+
+1. Provide a channel list: the channel list contains one or more `:phoenix_pubsub` attributes such as server name and topic.
+1. Prepare a command or a query.
+1. Determine how many tries you want.
+1. Invoke one of `Exrows.Exyxorp.send_rr/3`, `Exrows.Exyxorp.find_rr/3`, `Exrows.Exyxorp.find_bc/2` with above arguments.
+1. Learn the result of invocation.
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
