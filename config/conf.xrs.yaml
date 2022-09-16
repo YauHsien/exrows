@@ -1,0 +1,64 @@
+## 系統提供
+#features:
+#  worker-Id-1:
+#    - worker-Id-2
+#    - worker-Id-3
+#  worker-Id-2: worker-Id3
+#  worker-Id-3: nil
+## 可自訂，可覆寫
+#exposes:
+#  worker-Id-1:
+#    HTTP: 80
+#    HTTPS: 443
+#    custom:
+#      test:
+#        port: 8080
+#      dev.:
+#        port: 5556
+#  worker-Id-2: []
+#  worker-Id-3: []
+
+net:
+  desc: desc \#1
+  Id: net \#1
+  NAT: external-ip/internal-ip
+  nodes:
+    ip: internal-ip
+    ip: internal-ip
+
+net:
+  desc: desc \#2
+  Id: net \#2
+  NAT: external-ip/internal-ip
+  nodes:
+    ip: internal-ip
+    ip: internal-ip
+
+net:
+  desc: desc \#3
+  Id: net \#3
+  NAT: external-ip/internal-ip
+  nodes:
+    ip: internal-ip
+    ip: internal-ip
+
+squad:
+  Id: work \#1 Id
+  work: worker \#1 Id
+  type: yxorp
+  nets:
+    Id: net \#1 Id
+    Id: net \#2 Id
+
+squad:
+  Id: work \#2 Id
+  work: worker \#2 Id
+  type: broadcast
+  nets:
+    Id: net \#1 Id
+    Id: net \#3 Id
+
+system:
+  squad-Id-1:
+    - squad-Id-2
+    - squad-Id-3
