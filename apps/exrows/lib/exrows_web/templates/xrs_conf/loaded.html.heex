@@ -1,0 +1,14 @@
+<section class="phx-hero">
+  <h1><%= gettext "Loaded and %{state}!", state: (case @state do :ok -> "成功"; :bad -> "失敗" end)  %></h1>
+</section>
+
+<section class="row">
+  <article class="column">
+    <div>File <%= inspect @file%></div>
+    <div style="border: 1px solid black;"><%= @content0 |> String.replace(["\n", " "], fn "\n" -> "<br/>" ; " " -> "&nbsp;" end) |> raw %> </div>
+  </article>
+  <article class="column">
+    <div>Loaded</div>
+    <div style="border: 1px solid black;"><%= inspect @content %></div>
+  </article>
+</section>
