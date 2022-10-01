@@ -1,13 +1,16 @@
 ## 系統提供
-#features:
-#  worker-Id-1:
-#    - worker-Id-2
-#    - worker-Id-3
-#  worker-Id-2: worker-Id3
-#  worker-Id-3: nil
-## 可自訂，可覆寫
-#exposes:
-#  worker-Id-1:
+## 我們提供的主項是 app ，附帶其他 kit ；而 feature 是 app 與 app 之間的關係。
+## 在此 features 定義裡，我們只標示 app 與 app 之間的依賴關係；
+## 並且， app 實作細節必須符合標示的依賴關係。
+#defined features:
+#  app-Id-1:
+#    - app-Id-2
+#    - app-Id-3
+#  app-Id-2: app-Id3
+#  app-Id-3: nil
+## expose 指每個 app 都需要外放哪些界面。
+#app exposes:
+#  app-Id-1:
 #    HTTP: 80
 #    HTTPS: 443
 #    custom:
@@ -15,9 +18,10 @@
 #        port: 8080
 #      dev.:
 #        port: 5556
-#  worker-Id-2: []
-#  worker-Id-3: []
+#  app-Id-2: []
+#  app-Id-3: []
 
+## net 定義網段
 net:
   desc: desc \#1
   Id: net \#1
@@ -42,22 +46,27 @@ net:
     ip: internal-ip
     ip: internal-ip
 
+## squad 是 worker ，表示在一堆 nets 網段上以指定的 app 進行一件工作。
+## 工作模式有二種： yxorp 為 reverse proxy 方式，也就是多選一；
+## broadcast 為多方同步。
 squad:
-  Id: work \#1 Id
-  work: worker \#1 Id
+  Id: squad \#1 Id
+  work: app \#1 Id
   type: yxorp
   nets:
     Id: net \#1 Id
     Id: net \#2 Id
 
 squad:
-  Id: work \#2 Id
-  work: worker \#2 Id
+  Id: squad \#2 Id
+  work: app \#2 Id
   type: broadcast
   nets:
     Id: net \#1 Id
     Id: net \#3 Id
 
+## system 定義 squad 與 squad 之間的關係。
+## squad 與 squad 之間的關係，與 app 與 app 之間的關係要對照。
 system:
   squad-Id-1:
     - squad-Id-2
