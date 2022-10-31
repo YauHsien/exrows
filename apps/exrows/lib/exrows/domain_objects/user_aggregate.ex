@@ -1,52 +1,23 @@
 alias Exrows.DomainObjects, as: DO
 alias DO.UserAggregate.Data, as: Data
-alias DO.UserAggregate.Methods, as: Method
 alias Exrows.Schemata, as: Sk
 
-defmodule Method do
-  defmacro getUserAccount() do
-    quote do: {unquote(Method), :get_user_account}
-  end
-  defmacro getActivityHistory() do
-    quote do: {unquote(Method), :get_activity_history}
-  end
-  defmacro getSystems() do
-	  quote do: {unquote(Method), :get_systems}
-  end
-end
-
 defmodule DO.UserAggregate do
-  use GenServer
-  require Method
 
-	@impl true
-  @spec init(keyword) :: {:ok, %{data: Data.t()}}
-  def init(init_arg) do
-    user_account =
-      %Sk.UserAccount{} = init_arg |> Keyword.fetch!(:user_account)
-    data =
-      Data.build(user_account)
-    {:ok, %{data: data}}
+  @spec build(sk_uaccount :: Sk.UserAccount.t) :: Data.t
+  def build(sk_uaccount) do
+    Data.build(sk_uaccount)
   end
 
-  @impl true
-  def handle_call(params, from, state)
+  @spec get_user_account(uaggregate :: Data.t) :: Data.UserAccountEntity.t
+  def get_user_account(data), do: data.user.user_account
 
-  def handle_call(Method.getUserAccount(), _f, s) do
-    {:reply, {:ok, s.data.user.user_account}, s}
-  end
+  @spec get_activity_history(uaggregate :: Data.t) :: Data.ActivityHistoryValueObject.t
+  def get_activity_history(data), do: data.user.activity_history
 
-  def handle_call(Method.getActivityHistory(), _f, s) do
-    {:reply, {:ok, s.data.user.activity_history}, s}
-  end
+  @spec get_systems(uaggregate :: Data.t) :: Data.SystemsValueObject.t
+  def get_systems(data), do: data.user.systems
 
-  def handle_call(Method.getSystems(), _f, s) do
-    {:reply, {:ok, s.data.user.systems}, s}
-  end
-
-  def handle_call(_p, _f, s) do
-    {:noreply, s}
-  end
 end
 
 defmodule Data do
@@ -146,6 +117,7 @@ defmodule Data.SystemsValueObject do
 
   @spec put(t, all_list :: [Data.SystemSheeth.t], activation_list :: [Data.SystemSheeth.t], current :: Data.SystemSheeth.t) :: :ok
   @doc """
+  . . . to make the structure containing two tracking lines.
   """
   def put(self, all_list, activation_list, current) do
     suture(all_list)
