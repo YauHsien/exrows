@@ -14,6 +14,8 @@ defmodule Exrows.Application do
       ExrowsWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Exrows.PubSub},
+      %{ id: :event_stream_worker,
+         start: {Phoenix.PubSub.Supervisor, :start_link, [[name: :event_stream]]} },
       # Start the Endpoint (http/https)
       ExrowsWeb.Endpoint
       # Start a worker by calling: Exrows.Worker.start_link(arg)
